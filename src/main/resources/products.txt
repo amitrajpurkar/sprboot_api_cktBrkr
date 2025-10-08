@@ -1,0 +1,10 @@
+{"_id":"001","name":"scooby","description":"scooby the dog toy from scooby doo series", "price":"$3.50"}
+{"_id":"002","name":"shaggy","description":"shaggy toy from scooby doo series", "price":"$3.50"}
+{"_id":"003","name":"velma","description":"velma toy from scooby doo series", "price":"$3.50"}
+{"_id":"004","name":"daphne","description":"daphne toy from scooby doo series", "price":"$3.50"}
+{"_id":"005","name":"fred","description":"fred toy from scooby doo series", "price":"$3.50"}
+{"_id":"006","name":"lightening mcqueen","description":"mcqueen toy from cars1 series", "price":"$5.50"}
+{"_id":"007","name":"doc hudson","description":"doc hudson toy from cars1 series", "price":"$5.50"}
+{"_id":"008","name":"sally carrera","description":"sally toy from cars1 series", "price":"$5.50"}
+{"_id":"009","name":"mater","description":"mater toy from cars1 series", "price":"$5.50"}
+{"_id":"010","name":"strip weathers","description":"king strip weather toy from cars1 series", "price":"$5.50"}

@@ -1,0 +1,12 @@
+{
+  "_id":"545345",
+  "partyId":"1234411",
+  "firstname":"john",
+  "lastname":"deer",
+  "dob":"1984-02-04T05:00:00.000Z",
+  "policies":[
+    {"policyID":"12345","hccID":"H0129321","group":"B0123","division":"123","policyStartDate":"2020-01-01T05:00:00.000Z","policyExpiryDate":"2020-12-31T05:00:00.000Z","plans":[{"planDefinitionId":"111","planName":"happyHealth","planNumber":"01405","segment":"small group", "planFamily":"ForWorkoutPeople","coverageType":"health", "status":"active"}, {"planDefinitionId":"321","planName":"basicMedicines","planNumber":"23","segment":"small group", "planFamily":"ForWorkoutPeople","coverageType":"rx", "status":"active"}]},
+    {"policyID":"12312","hccID":"H1234567","group":"B0123","division":"123","policyStartDate":"2019-01-01T05:00:00.000Z","policyExpiryDate":"2019-12-31T05:00:00.000Z","plans":[{"planDefinitionId":"109","planName":"previousHealth","planNumber":"01123","segment":"small group", "planFamily":"ForWorkoutPeople","coverageType":"health", "status":"active"}, {"planDefinitionId":"321","planName":"basicMedicines","planNumber":"23","segment":"small group", "planFamily":"ForWorkoutPeople","coverageType":"rx", "status":"active"}]},
+    {"policyID":"12121","hccID":"H0114311","group":"B0111","division":"222","policyStartDate":"2018-01-01T05:00:00.000Z","policyExpiryDate":"2018-12-31T05:00:00.000Z","plans":[{"planDefinitionId":"108","planName":"olderHealth","planNumber":"01043","segment":"individual under 65", "planFamily":"ForNormalPeople","coverageType":"health", "status":"soft retired"}, {"planDefinitionId":"321","planName":"basicMedicines","planNumber":"23","segment":"small group", "planFamily":"ForWorkoutPeople","coverageType":"rx", "status":"active"}]}
+  ]
+}
