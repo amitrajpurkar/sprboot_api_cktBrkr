@@ -1,6 +1,6 @@
 package com.anr.config;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -43,15 +43,16 @@ public class CircuitBreakerFailsafeConfig {
                 // when half-open, if 3 out of 5 requests
                 .withSuccessThreshold(3, 5)
                 // delay this long before half opening the circuit
-                .withDelay(1, TimeUnit.SECONDS).onClose(() -> sbutil.logInfo(null, msgForClosed))
+                .withDelay(Duration.ofSeconds(1)).onClose(() -> sbutil.logInfo(null, msgForClosed))
                 .onOpen(() -> sbutil.logInfo(null, msgForOpened))
                 .onHalfOpen(() -> sbutil.logInfo(null, msgForHalfClosed));
     }
 
     @Bean(name = "CBFSDefaultApi")
     public CircuitBreaker cktBrkrFSDefaultApi() {
-        int timeoutMS = appProps.getWaitperiod().getApiDefaultService();
-        return buildCktBrkr().withTimeout(timeoutMS, TimeUnit.MILLISECONDS);
+        // Note: Timeout is handled separately via Failsafe.with() execution
+        // Circuit breaker focuses on failure thresholds and state management
+        return buildCktBrkr();
     }
 
 }

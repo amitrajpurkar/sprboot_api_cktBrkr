@@ -14,7 +14,7 @@ import io.swagger.v3.oas.models.info.License;
 public class OpenApiConfig {
     @Bean
     public GroupedOpenApi publicApi() {
-        return GroupedOpenApi.builder().setGroup("sb-svc-public").pathsToMatch("/api/v1/**").build();
+        return GroupedOpenApi.builder().group("sb-svc-public").pathsToMatch("/api/v1/**").build();
     }
 
     @Bean
