@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ import com.anr.localmdb.model.Product.ProductBuilder;
 import com.anr.service.CollectionUpload;
 import com.google.gson.Gson;
 
+@Disabled("MongoDB tests disabled - requires MongoDB instance")
 @SpringBootTest
 public class ProductRepositoryTest {
     @Autowired
