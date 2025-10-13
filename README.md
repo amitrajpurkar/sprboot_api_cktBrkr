@@ -1,33 +1,105 @@
-# atjax
-this sample application takes inspiration from a successful implementation seen at a place
+# Spring Boot API with Circuit Breaker
 
-## what project/ app is this?
-* this is an example of java application, having simple/ sample rest APIs 
-* the application shows desirable quality control features typically anticipated in an production ready app supporting critical business features
-* target audience -- a java developer having good experience working with Java tech stack and using this as a reference after gap of several years working in different areas of SDLC
+## 📋 Application Overview
 
-## what will you need to have this app up and running
-here are the bare minimum tools you need on your machine to get this running on your machine
-* java JDK version 14.0.2 
-* gradle version 6.6
-* git version 2.33.1.windows.1
-* SpringBoot version 2.3.3.RELEASE
-* Mongo DB version
+A production-ready Spring Boot REST API demonstrating enterprise-grade patterns including circuit breakers, aspect-oriented logging, and comprehensive test coverage.
 
-### for ideal backend services
-Following non-functional features will make a big difference in producing a High Quality product that can last test of time.
-below usecases/ reference implementations, can be seen
-* logEvents for capturing meaningful data for machine learning
-* logRecord that records severside details and contains individual logEvent
-* logForwarder that writes or delegates log-writing to platforms like Splunk or ELK so that meaningful dashboards, controls/ alerts can be done
-* Aspects for intercepting at controller, service layer entry-exit points
-* use aspects for capturing logs, measuring response times, using circuit breakers for SLA timeouts
-* circuitBreaker implementation for wait-periods or timeouts
-* configProperties making possible grouping of application properties as java objects
-* swagger documentation
-* unit test cases for documenting different scenarios that needs to be handled by service-layer and controllers
-* arch-unit test cases to ensuring the application code structure is following desired patterns
-* jacoco test coverage to keep tap of testability and coverage of your code
+📖 **[View Detailed Analysis](src/main/docs/First_Analysis.md)**
+
+## 🔄 Migration to Latest Versions
+
+This application has been upgraded to Spring Boot 3.2.10, Gradle 9.1.0, and migrated from Hystrix to Resilience4j for circuit breaker implementation.
+
+📋 **[View Complete Upgrade Plan](src/main/docs/Upgrade_Plan.md)**
+
+## ✅ Migration Progress
+
+**Status: 100% Complete** 🎉
+
+All migration phases have been successfully completed:
+- ✅ Spring Boot 3.2.10 upgrade
+- ✅ Gradle 9.1.0 migration  
+- ✅ Resilience4j circuit breaker integration
+- ✅ All tests passing (100% pass rate)
+
+📊 **[View Final Test Results](src/main/docs/FINAL_TEST_RESULTS.md)**
+
+---
+
+## 🚀 Technology Stack
+
+- **Java:** 21 (tests), 25 (compilation)
+- **Spring Boot:** 3.2.10
+- **Gradle:** 9.1.0
+- **Circuit Breaker:** Resilience4j 2.2.0
+- **Database:** MongoDB (optional)
+
+## 📚 Documentation
+
+All project documentation is available in the [`src/main/docs/`](src/main/docs/) folder.
+
+**Quick Links:**
+- 📖 [Documentation Index](src/main/docs/INDEX.md)
+- 🔄 [Resilience4j Quick Start](src/main/docs/RESILIENCE4J_QUICK_START.md)
+- 📋 [Migration Guide](src/main/docs/RESILIENCE4J_MIGRATION.md)
+- ✅ [Test Results](src/main/docs/FINAL_TEST_RESULTS.md)
+
+## 🎯 Key Features
+
+### Enterprise Patterns
+- **Circuit Breaker:** Resilience4j for fault tolerance and resilience
+- **Aspect-Oriented Logging:** Automatic request/response logging at controller layer
+- **Log Forwarding:** Integration with Splunk/ELK for centralized logging
+- **Configuration Management:** Type-safe configuration properties
+
+### Quality Assurance
+- **Unit Tests:** Comprehensive test coverage with JUnit 5 and Mockito
+- **Architecture Tests:** ArchUnit for enforcing architectural patterns
+- **Code Coverage:** JaCoCo for tracking test coverage
+- **API Documentation:** OpenAPI 3.0 (Swagger) integration
+
+### Observability
+- **Health Checks:** Kubernetes-ready readiness and liveness probes
+- **Metrics:** Spring Boot Actuator endpoints
+- **Distributed Tracing:** Ready for integration with monitoring tools
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Java 21 or higher
+- Gradle 9.1.0 or higher
+- MongoDB (optional, for repository tests)
+
+### Build & Run
+
+```bash
+# Build the project
+gradle clean build
+
+# Run tests
+gradle test
+
+# Run the application
+gradle bootRun
+```
+
+### API Endpoints
+
+- **Health Check:** `GET /probe/readiness`
+- **Liveness Probe:** `GET /probe/liveness`
+- **Sample API:** `GET /api/sample`
+- **Swagger UI:** `http://localhost:8080/swagger-ui.html`
+
+## 📈 Project Status
+
+- **Build:** ✅ Successful
+- **Tests:** ✅ 100% Pass Rate (9/9 executable tests)
+- **Code Quality:** ✅ All checks passing
+- **Documentation:** ✅ Complete
+
+---
+
+**Last Updated:** October 13, 2025
 
 
 
