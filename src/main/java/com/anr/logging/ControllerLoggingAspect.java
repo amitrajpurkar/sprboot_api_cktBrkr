@@ -15,7 +15,8 @@ import com.anr.controller.ControllerFailureResponses;
 import com.anr.logging.model.SplunkEvent.SplunkEventBuilder;
 import com.anr.model.SBResponseModel;
 import com.google.gson.Gson;
-import com.netflix.hystrix.HystrixCommand;
+// Removed: Hystrix not compatible with Spring Boot 3.x
+// import com.netflix.hystrix.HystrixCommand;
 
 @Aspect
 @Component
@@ -32,9 +33,10 @@ public class ControllerLoggingAspect {
     @Autowired
     private ControllerFailureResponses failures;
 
-    @Autowired
-    @Qualifier("CmdConfigDefService")
-    private HystrixCommand.Setter cmdConfigDefaultSvc;
+    // Removed: Hystrix configuration - replaced with direct execution
+    // @Autowired
+    // @Qualifier("CmdConfigDefService")
+    // private HystrixCommand.Setter cmdConfigDefaultSvc;
 
     private static final String SPACE = " ";
 
@@ -48,33 +50,21 @@ public class ControllerLoggingAspect {
         bldr.transactionType(TransactionType.Request);
         sbutil.logInfo(transactionID, "start time:" + startTime);
 
-        HystrixCommand<SBResponseModel> command = new HystrixCommand<SBResponseModel>(cmdConfigDefaultSvc) {
-            @Override
-            protected SBResponseModel run() throws Exception {
-                try {
-                    return (SBResponseModel) jointpoint.proceed();
-                } catch (Exception e) {
-                    throw e;
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        // Direct execution (Hystrix removed for Spring Boot 3.x compatibility)
+        // TODO: Replace with Resilience4j for circuit breaker functionality
+        SBResponseModel response;
+        try {
+            response = (SBResponseModel) jointpoint.proceed();
+        } catch (Throwable t) {
+            // Fallback logic (previously in Hystrix getFallback())
+            Signature signature = jointpoint.getSignature();
+            String methodName = signature.getName();
+            sbutil.logError(transactionID, String.format("Execution exception: (method: %s) %s", methodName,
+                    sbutil.getRootCauseMessage(t)));
+            sbutil.logStackTrace(transactionID, methodName, t);
 
-            @Override
-            protected SBResponseModel getFallback() {
-                Throwable t = getExecutionException();
-
-                Signature signature = jointpoint.getSignature();
-                String methodName = signature.getName();
-                String transactionID = (String) jointpoint.getArgs()[0];
-                sbutil.logError(transactionID, String.format("Execution exception: (method: %s) %s", methodName,
-                        sbutil.getRootCauseMessage(t)));
-                sbutil.logStackTrace(transactionID, methodName, t);
-
-                return failures.getSampleFailureResponse(transactionID, sourceChannel, locale, field1, field2, t);
-            }
-        };
-        SBResponseModel response = command.execute();
+            response = failures.getSampleFailureResponse(transactionID, sourceChannel, locale, field1, field2, t);
+        }
 
         String messageString = null;
         if (response == null) {

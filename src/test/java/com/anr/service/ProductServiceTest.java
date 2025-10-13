@@ -1,16 +1,17 @@
 package com.anr.service;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.util.Objects;
+
 import org.apache.commons.lang3.RandomStringUtils;
-import org.bouncycastle.util.Objects;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.anr.localmdb.model.Product;
 import com.anr.localmdb.model.Product.ProductBuilder;
@@ -29,9 +30,8 @@ import com.anr.localmdb.repository.ProductRepository;
  * @author amitr
  *
  */
-// @RunWith(SpringRunner.class)
-// @SpringBootTest
-@RunWith(MockitoJUnitRunner.class)
+// @SpringBootTest - Not needed for pure unit tests with mocks
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
     @InjectMocks
     private ProductService sut;
@@ -42,7 +42,7 @@ public class ProductServiceTest {
     private ProductRepository mockRepo;
 
     @Test
-    public void insert_one_product() {
+    void insert_one_product() {
         Product mockProduct = getMock("ironman", "plastic figuring toy of an avenger superhero", "$5.49");
         Product expectedProduct = getMock("ironman", "plastic figuring toy of an avenger superhero", "$5.49");
 
@@ -50,7 +50,7 @@ public class ProductServiceTest {
         Product savedProduct = sut.saveOne(mockProduct);
 
         assertNotNull(savedProduct, "the saved product was null");
-        assertTrue(Objects.areEqual(savedProduct, expectedProduct));
+        assertTrue(Objects.equals(savedProduct, expectedProduct));
     }
 
     private Product getMock(String name, String desc, String price) {

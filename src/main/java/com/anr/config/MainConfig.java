@@ -8,7 +8,7 @@ import static org.springframework.aop.interceptor.CustomizableTraceInterceptor.P
 
 import java.util.concurrent.Executor;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.anr.logging.model.SplunkLogRecord;
 import com.google.gson.Gson;
@@ -33,7 +33,7 @@ import com.google.gson.Gson;
 @Configuration
 @ComponentScan
 @EnableWebMvc
-public class MainConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+public class MainConfig implements WebMvcConfigurer, ApplicationContextAware {
 
     private ApplicationContext appContext;
 

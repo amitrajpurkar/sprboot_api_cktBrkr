@@ -1,19 +1,18 @@
 package com.anr.localmdb.repository;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.bouncycastle.util.Objects;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.anr.common.TestHelper;
 import com.anr.localmdb.model.Product;
@@ -21,7 +20,6 @@ import com.anr.localmdb.model.Product.ProductBuilder;
 import com.anr.service.CollectionUpload;
 import com.google.gson.Gson;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProductRepositoryTest {
     @Autowired
@@ -32,8 +30,8 @@ public class ProductRepositoryTest {
     @Autowired
     private Gson gson;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         try {
             upload.uploadToCollection("products", "test");
         } catch (IOException e) {
@@ -42,15 +40,15 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void test_find_productBy_exactName() {
+    void test_find_productBy_exactName() {
         String givenName = "shaggy";
         List<Product> fetchedProducts = prodRepo.findProductsByName(givenName);
 
-        assertTrue(fetchedProducts.size() == 1);
+        assertEquals(1, fetchedProducts.size());
     }
 
     @Test
-    public void test_find_prodByDescriptionPart() {
+    void test_find_prodByDescriptionPart() {
         String givenPartOfDescription = "cars1";
         List<Product> fetchedProducts = prodRepo.findProductsWithDescriptionContaining(givenPartOfDescription);
 
@@ -58,12 +56,12 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void insert_one_product() {
+    void insert_one_product() {
         Product giveProduct = getStubbedProduct("ironman", "plastic figuring toy of an avenger superhero", "$5.49");
         Product savedProduct = prodRepo.save(giveProduct);
 
         assertNotNull(savedProduct, "the saved product was null");
-        assertTrue(Objects.areEqual(savedProduct, giveProduct));
+        assertTrue(Objects.equals(savedProduct, giveProduct));
     }
 
     private Product getStubbedProduct(String name, String desc, String price) {
