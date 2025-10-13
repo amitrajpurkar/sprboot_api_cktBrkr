@@ -77,8 +77,15 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     
     implementation 'net.jodah:failsafe:2.4.4'
+    
+    // Resilience4j - Modern circuit breaker replacement for Hystrix
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-timelimiter:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-bulkhead:2.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    
     // Hystrix removed - incompatible with Spring Boot 3.x
-    // Will be replaced with Resilience4j or direct Failsafe usage
     //implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE'
     
     implementation 'com.google.guava:guava:33.0.0-jre'
