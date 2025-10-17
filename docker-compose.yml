@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sprboot-api-cktbrkr
+    ports:
+      - "8080:8080"
+    environment:
+      # Spring profiles
+      - SPRING_PROFILES_ACTIVE=docker
+      # MongoDB connection
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/sampledb
+      - SPRING_DATA_MONGODB_DATABASE=sampledb
+      # Application settings
+      - SPRING_APPLICATION_NAME=samplebackendsvc
+      # Security (change in production)
+      - SPRING_SECURITY_USER_NAME=user
+      - SPRING_SECURITY_USER_PASSWORD=password
+      # Logging
+      - LOGGING_LEVEL_COM_ANR=INFO
+      # JVM settings
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      # MongoDB settings (change in production)
+      - MONGO_INITDB_DATABASE=sampledb
+    volumes:
+      # Persist MongoDB data
+      - mongodb-data:/data/db
+      # MongoDB configuration
+      - mongodb-config:/data/configdb
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:
+    driver: local
+  mongodb-config:
+    driver: local

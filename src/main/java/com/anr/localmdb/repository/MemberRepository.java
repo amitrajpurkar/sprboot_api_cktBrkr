@@ -6,11 +6,11 @@ import org.bson.BsonDateTime;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 //import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.anr.localmdb.model.InsuranceMember;
 
-@Component
+@Repository
 public interface MemberRepository extends MongoRepository<InsuranceMember, String> {
     // can additionally extend , QuerydslPredicateExecutor<InsuranceMember>
 

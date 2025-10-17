@@ -3,12 +3,12 @@ package com.anr.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.anr.localmdb.model.InsuranceMember;
 import com.anr.localmdb.repository.MemberRepository;
 
-@Component
+@Service
 public class MemberService {
 
     @Autowired
