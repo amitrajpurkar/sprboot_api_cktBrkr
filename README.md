@@ -32,7 +32,7 @@ All migration phases have been successfully completed:
 - **Spring Boot:** 3.2.10
 - **Gradle:** 9.1.0
 - **Circuit Breaker:** Resilience4j 2.2.0
-- **Database:** MongoDB (optional)
+- **Database:** H2 (in-memory, embedded)
 
 ## 📚 Documentation
 
@@ -40,8 +40,9 @@ All project documentation is available in the [`src/main/docs/`](src/main/docs/)
 
 **Quick Links:**
 - 📖 [Documentation Index](src/main/docs/INDEX.md)
+- 🗄️ [H2 Database Quick Start](H2_QUICK_START.md) ⭐ NEW
 - 🔄 [Resilience4j Quick Start](src/main/docs/RESILIENCE4J_QUICK_START.md)
-- 📋 [Migration Guide](src/main/docs/RESILIENCE4J_MIGRATION.md)
+- 📋 [H2 Migration Guide](src/main/docs/H2_MIGRATION.md) ⭐ NEW
 - ✅ [Test Results](src/main/docs/FINAL_TEST_RESULTS.md)
 
 ## 🎯 Key Features
@@ -68,7 +69,7 @@ All project documentation is available in the [`src/main/docs/`](src/main/docs/)
 ### Prerequisites
 - Java 21 or higher
 - Gradle 9.1.0 or higher
-- MongoDB (optional, for repository tests)
+- **No database installation required!** (H2 is embedded)
 
 ### Build & Run
 
@@ -89,6 +90,7 @@ gradle bootRun
 - **Liveness Probe:** `GET /probe/liveness`
 - **Sample API:** `GET /api/sample`
 - **Swagger UI:** `http://localhost:8080/swagger-ui.html`
+- **H2 Console:** `http://localhost:8080/h2-console` ⭐ NEW
 
 ## 📈 Project Status
 

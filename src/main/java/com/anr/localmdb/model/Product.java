@@ -1,20 +1,30 @@
 package com.anr.localmdb.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@Document(collection = "products")
+@Entity
+@Table(name = "products")
 @JsonInclude(Include.NON_NULL)
 public class Product {
     public static final Product EMPTY = new ProductBuilder("00", "empty product").desc("no such product is defined")
             .build();
     @Id
+    @Column(name = "id", nullable = false, length = 50)
     private String id;
+    
+    @Column(name = "name", length = 255)
     private String name;
+    
+    @Column(name = "description", length = 500)
     private String description;
+    
+    @Column(name = "price", length = 20)
     private String price;
 
     public Product() {

@@ -18,9 +18,10 @@ import com.anr.exception.SBNestedException;
 import com.anr.logging.LogForwarder;
 import com.anr.logging.model.SplunkEvent;
 import com.google.gson.Gson;
-import com.mongodb.MongoException;
-import com.mongodb.MongoSecurityException;
-import com.mongodb.MongoSocketReadTimeoutException;
+// MongoDB exceptions removed - migrated to H2 database
+// import com.mongodb.MongoException;
+// import com.mongodb.MongoSecurityException;
+// import com.mongodb.MongoSocketReadTimeoutException;
 // Removed: Hystrix not compatible with Spring Boot 3.x
 // import com.netflix.hystrix.exception.HystrixRuntimeException;
 // import com.netflix.hystrix.exception.HystrixTimeoutException;
@@ -99,8 +100,8 @@ public class SBUtil {
     }
 
     /**
-     * Parse exception - Hystrix-specific code removed for Spring Boot 3.x compatibility
-     * TODO: Replace with Resilience4j or direct Failsafe exception handling
+     * Parse exception - Generic exception handling
+     * MongoDB-specific handling removed (migrated to H2)
      */
     public ErrorRootElement parseException(String transactionID, Throwable e, String callingMethodName) {
         String errMsgString = null;
@@ -108,14 +109,12 @@ public class SBUtil {
                 getRootCauseMessage(e) + String.format(ERR_MSG_SUFFIX, callingMethodName));
         SBNestedException ne = new SBNestedException("caught in fallback", e);
         
-        if (ne.contains(MongoException.class) || ne.contains(MongoSecurityException.class)
-                || ne.contains(MongoSocketReadTimeoutException.class)) {
-            err.setErrorCode("ERR-MONGO");
-        } else if (ne.contains(RestClientException.class)) {
+        // MongoDB exception handling removed - now using H2 database
+        if (ne.contains(RestClientException.class)) {
             err.setErrorCode("ERR-RESTBACKEND");
         }
 
-        // Generic exception handling (Hystrix-specific code removed)
+        // Generic exception handling
         errMsgString = "Exception occurred " + String.format(ERR_MSG_SUFFIX, callingMethodName);
         logStackTrace(transactionID, errMsgString, e);
 

@@ -64,7 +64,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    // H2 Database - In-memory database for demos
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2:2.2.224'
+    
+    // MongoDB removed - migrated to H2
+    //implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     //implementation 'org.mongodb:mongodb-driver:3.8.2'
     //implementation ('com.querydsl:querydsl-mongodb:4.3.1') {
     //  exclude group: 'org.mongodb', module: 'mongo-java-driver'

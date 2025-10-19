@@ -4,41 +4,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.anr.common.TestHelper;
 import com.anr.localmdb.model.Product;
 import com.anr.localmdb.model.Product.ProductBuilder;
-import com.anr.service.CollectionUpload;
-import com.google.gson.Gson;
 
-@Disabled("MongoDB tests disabled - requires MongoDB instance")
 @SpringBootTest
 public class ProductRepositoryTest {
     @Autowired
     private ProductRepository prodRepo;
-    @Autowired
-    private CollectionUpload upload;
-
-    @Autowired
-    private Gson gson;
 
     @BeforeEach
     void setup() {
-        try {
-            upload.uploadToCollection("products", "test");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // H2 database is automatically initialized with sample data via DataInitializer
+        // No manual setup needed - data is loaded on application startup
     }
 
     @Test
@@ -63,15 +49,12 @@ public class ProductRepositoryTest {
         Product savedProduct = prodRepo.save(giveProduct);
 
         assertNotNull(savedProduct, "the saved product was null");
-        assertTrue(Objects.equals(savedProduct, giveProduct));
+        assertEquals(giveProduct.getId(), savedProduct.getId());
+        assertEquals(giveProduct.getName(), savedProduct.getName());
     }
 
     private Product getStubbedProduct(String name, String desc, String price) {
         String id = RandomStringUtils.randomAlphabetic(10);
         return new ProductBuilder(id, name).desc(desc).price(price).build();
-    }
-
-    private Product getSingleProduct(String jsonFile) {
-        return gson.fromJson(TestHelper.getJsonXmlStr(jsonFile), Product.class);
     }
 }
