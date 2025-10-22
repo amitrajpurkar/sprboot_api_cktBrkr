@@ -1,0 +1,184 @@
+site_name: Spring Boot API with Circuit Breaker
+site_description: Full-stack production-ready application with Spring Boot backend and React frontend
+site_author: Development Team
+site_url: https://example.com
+
+# Repository
+repo_name: sprboot_api_cktBrkr
+repo_url: https://github.com/yourusername/sprboot_api_cktBrkr
+edit_uri: ""
+
+# Copyright
+copyright: Copyright &copy; 2025 Spring Boot API Project
+
+# Theme Configuration
+theme:
+  name: material
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - toc.follow
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+  
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/api
+  
+  language: en
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+      lang: en
+  - tags
+
+# Extra
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/yourusername
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Help us improve this page.
+
+# Navigation
+nav:
+  - Home: index.md
+  
+  - Quick Start Guides:
+    - H2 Database: quick-start/h2-quick-start.md
+    - Frontend Setup: quick-start/frontend-quickstart.md
+    - Docker Setup: quick-start/docker-quick-start.md
+    - Gatling Testing: quick-start/gatling-quick-reference.md
+    - Resilience4j: RESILIENCE4J_QUICK_START.md
+  
+  - Architecture:
+    - Project Summary: PROJECT_SUMMARY.md
+    - Full Stack Architecture: FULLSTACK_ARCHITECTURE.md
+    - First Analysis: First_Analysis.md
+  
+  - Implementation Guides:
+    - Product API: PRODUCT_API_IMPLEMENTATION.md
+    - Frontend Implementation: FRONTEND_IMPLEMENTATION.md
+    - Docker Implementation: DOCKER_IMPLEMENTATION.md
+    - Performance Testing: PERFORMANCE_TESTING_IMPLEMENTATION.md
+    - Circuit Breaker Summary: CIRCUIT_BREAKER_SUMMARY.md
+  
+  - Migration Guides:
+    - H2 Database Migration: H2_MIGRATION.md
+    - Resilience4j Migration: RESILIENCE4J_MIGRATION.md
+    - Gradle 9 Migration: GRADLE_9_MIGRATION.md
+    - Upgrade Plan: Upgrade_Plan.md
+    - Circuit Breaker Upgrade: Upgrade_CircuitBreaker_Plan.md
+    - H2 Upgrade Plan: Upgrade_H2_Plan.md
+  
+  - Test Results:
+    - Backend Tests: FINAL_TEST_RESULTS.md
+    - Frontend Tests: FRONTEND_TEST_SUMMARY.md
+    - Product Controller Tests: PRODUCT_CONTROLLER_TESTS.md
+    - Test Results Summary: TEST_RESULTS_SUMMARY.md
+  
+  - Migration Status:
+    - Migration Summary: MIGRATION_SUMMARY.md
+    - H2 Migration Complete: H2_MIGRATION_COMPLETE.md
+    - Test Migration Complete: TEST_MIGRATION_COMPLETE.md
+    - Phase 1 Complete: PHASE1_COMPLETE.md
+    - Phase 3 Complete: PHASE3_COMPLETE.md
+    - Upgrade Progress: UPGRADE_PROGRESS.md
+    - Upgrade Status: UPGRADE_STATUS.md
+  
+  - Additional Documentation:
+    - Documentation Index: INDEX.md
+    - Enhancements Oct 2025: ENHANCEMENTS_OCT_2025.md
+    - Annotation Refactoring: ANNOTATION_REFACTORING.md
+    - Resilience4j Implementation: RESILIENCE4J_IMPLEMENTATION_SUMMARY.md
+    - Docker Guide: DOCKER.md
+    - Performance Testing: PERFORMANCE_TESTING.md
+    - Pending Actions: PENDING_ACTIONS.md
+
+# Custom CSS
+extra_css:
+  - stylesheets/extra.css

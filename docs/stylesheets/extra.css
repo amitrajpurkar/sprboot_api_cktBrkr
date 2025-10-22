@@ -1,0 +1,141 @@
+/* Custom styles for Spring Boot API documentation */
+
+:root {
+  --md-primary-fg-color: #3f51b5;
+  --md-accent-fg-color: #536dfe;
+}
+
+/* Custom admonition styles */
+.md-typeset .admonition.note {
+  border-left-color: #448aff;
+}
+
+.md-typeset .admonition.tip {
+  border-left-color: #00c853;
+}
+
+.md-typeset .admonition.warning {
+  border-left-color: #ff9100;
+}
+
+.md-typeset .admonition.danger {
+  border-left-color: #ff1744;
+}
+
+/* Code block enhancements */
+.md-typeset code {
+  background-color: rgba(63, 81, 181, 0.1);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}
+
+/* Table styling */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color);
+  color: white;
+  font-weight: 600;
+}
+
+/* Emoji support */
+.md-typeset .twemoji {
+  vertical-align: text-bottom;
+}
+
+/* Custom badges */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  margin: 0 0.2em;
+}
+
+.badge-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.badge-info {
+  background-color: #2196f3;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #ff9800;
+  color: white;
+}
+
+.badge-danger {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Navigation enhancements */
+.md-nav__item--active > .md-nav__link {
+  font-weight: 600;
+}
+
+/* Search highlighting */
+.md-search-result__article--document {
+  border-left: 3px solid var(--md-primary-fg-color);
+}
+
+/* Footer customization */
+.md-footer-meta {
+  background-color: var(--md-primary-fg-color);
+}
+
+/* Custom container for feature highlights */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.feature-card {
+  padding: 1.5rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+  background-color: var(--md-code-bg-color);
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  color: var(--md-primary-fg-color);
+}
+
+/* Status indicators */
+.status-complete::before {
+  content: "✅ ";
+}
+
+.status-pending::before {
+  content: "⏳ ";
+}
+
+.status-failed::before {
+  content: "❌ ";
+}
+
+/* Version badge */
+.version-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.3em 0.8em;
+  border-radius: 1em;
+  font-size: 0.85em;
+  font-weight: 600;
+  display: inline-block;
+  margin-left: 0.5em;
+}

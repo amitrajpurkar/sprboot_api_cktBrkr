@@ -52,12 +52,23 @@ All migration phases have been successfully completed:
 
 ## 📚 Documentation
 
-All project documentation is available in the [`src/main/docs/`](src/main/docs/) folder.
+### 📖 MkDocs Documentation Site ⭐ NEW
+
+Beautiful, searchable documentation powered by MkDocs:
+
+```bash
+# Start documentation server
+mkdocs serve
+
+# Access at: http://127.0.0.1:8000
+```
+
+See [MkDocs Setup Guide](MKDOCS_SETUP_COMPLETE.md) for details.
 
 ### Quick Start Guides
 - 🗄️ [H2 Database Quick Start](H2_QUICK_START.md)
 - 🔄 [Resilience4j Quick Start](src/main/docs/RESILIENCE4J_QUICK_START.md)
-- 🎨 [Frontend Quick Start](FRONTEND_QUICKSTART.md) ⭐ NEW
+- 🎨 [Frontend Quick Start](FRONTEND_QUICKSTART.md)
 - 🐳 [Docker Quick Start](DOCKER_QUICK_START.md)
 - ⚡ [Gatling Performance Testing](GATLING_QUICK_REFERENCE.md)
 
