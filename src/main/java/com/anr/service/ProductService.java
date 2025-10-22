@@ -40,4 +40,25 @@ public class ProductService {
         return productRepo.findProductsWithDescriptionContaining(textpart);
     }
 
+    public List<Product> findAll() {
+        return productRepo.findAll();
+    }
+
+    public Product updateProduct(String id, Product product) {
+        Optional<Product> existingProduct = productRepo.findById(id);
+        if (existingProduct.isEmpty()) {
+            return Product.EMPTY;
+        }
+        product.setId(id); // Ensure the ID matches
+        return productRepo.save(product);
+    }
+
+    public boolean deleteProduct(String id) {
+        if (productRepo.existsById(id)) {
+            productRepo.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 }

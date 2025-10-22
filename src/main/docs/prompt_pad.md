@@ -16,3 +16,6 @@ step 3:
 
 step 4:
 * describe a detailed step by step plan to change the mongodb database to use latest H2 in-memory database. Write this plan in Upgrade_H2_Plan.md file in root directory
+
+step 5:
+* using the repository classes and model, create controller endpoints for Product entity. create endpoints for list existing products, create new product, update existing product, delete existing product
