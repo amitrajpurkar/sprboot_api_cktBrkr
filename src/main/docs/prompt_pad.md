@@ -19,3 +19,13 @@ step 4:
 
 step 5:
 * using the repository classes and model, create controller endpoints for Product entity. create endpoints for list existing products, create new product, update existing product, delete existing product
+
+step 6: 
+* create a frontend UI in reactjs as SPA to consume product endpoints
+
+step 7:
+* add mkdocs to the application to document the application
+
+step 8:
+* this machine has coderabbit installed. Use it to run a thorough code analysis and code review of the application and generate a report
+
