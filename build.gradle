@@ -63,6 +63,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // H2 Database - In-memory database for demos
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -89,6 +90,7 @@ dependencies {
     implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.2.0'
     implementation 'io.github.resilience4j:resilience4j-timelimiter:2.2.0'
     implementation 'io.github.resilience4j:resilience4j-bulkhead:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-ratelimiter:2.2.0'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     
     // Hystrix removed - incompatible with Spring Boot 3.x

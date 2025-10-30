@@ -1,11 +1,15 @@
 package com.anr.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 
 import com.anr.localmdb.model.Product;
 import com.anr.service.ProductService;
@@ -76,15 +82,21 @@ public class ProductController {
             @ApiResponse(responseCode = "201", description = "Product created successfully",
                     content = @Content(mediaType = "application/json", 
                     schema = @Schema(implementation = Product.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input", 
+            @ApiResponse(responseCode = "400", description = "Invalid input - validation errors", 
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", 
                     content = @Content)
     })
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        if (product.getId() == null || product.getId().isEmpty()) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> createProduct(@Valid @RequestBody Product product, BindingResult result) {
+        // Check for validation errors
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
         }
+        
         Product savedProduct = productService.saveOne(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
@@ -100,13 +112,23 @@ public class ProductController {
                     schema = @Schema(implementation = Product.class))),
             @ApiResponse(responseCode = "404", description = "Product not found", 
                     content = @Content),
-            @ApiResponse(responseCode = "400", description = "Invalid input", 
+            @ApiResponse(responseCode = "400", description = "Invalid input - validation errors", 
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", 
                     content = @Content)
     })
-    public ResponseEntity<Product> updateProduct(@PathVariable String id, 
-                                                  @RequestBody Product product) {
+    public ResponseEntity<?> updateProduct(@PathVariable String id, 
+                                           @Valid @RequestBody Product product,
+                                           BindingResult result) {
+        // Check for validation errors
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
+        }
+        
         Product updatedProduct = productService.updateProduct(id, product);
         if (updatedProduct == Product.EMPTY) {
             return ResponseEntity.notFound().build();

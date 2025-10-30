@@ -265,6 +265,409 @@ public class ProductControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    // ========================================================================
+    // VALIDATION TESTS - Added for CRITICAL-002 fix
+    // ========================================================================
+
+    // Test POST - Invalid ID with special characters
+    @Test
+    void test_createProduct_invalidIdWithSpecialCharacters_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001@#$");
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.id").value("Product ID can only contain alphanumeric characters, hyphens, and underscores"));
+    }
+
+    // Test POST - ID too long (exceeds 50 characters)
+    @Test
+    void test_createProduct_idTooLong_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P123456789012345678901234567890123456789012345678901"); // 51 chars
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.id").value("Product ID must be between 1 and 50 characters"));
+    }
+
+    // Test POST - Missing name (blank)
+    @Test
+    void test_createProduct_missingName_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Product name is required"));
+    }
+
+    // Test POST - Name too short (less than 2 characters)
+    @Test
+    void test_createProduct_nameTooShort_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("A");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Product name must be between 2 and 255 characters"));
+    }
+
+    // Test POST - Name too long (exceeds 255 characters)
+    @Test
+    void test_createProduct_nameTooLong_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        // Create a 256 character string
+        invalidProduct.setName("A".repeat(256));
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Product name must be between 2 and 255 characters"));
+    }
+
+    // Test POST - Description too long (exceeds 500 characters)
+    @Test
+    void test_createProduct_descriptionTooLong_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("Valid Name");
+        // Create a 501 character string
+        invalidProduct.setDescription("A".repeat(501));
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.description").value("Description must not exceed 500 characters"));
+    }
+
+    // Test POST - Invalid price format (no decimal)
+    @Test
+    void test_createProduct_invalidPriceFormat_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("invalid");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.price").value("Price must be in format: $10.00 or 10.00"));
+    }
+
+    // Test POST - Invalid price format (wrong decimal places)
+    @Test
+    void test_createProduct_invalidPriceDecimalPlaces_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.999"); // 3 decimal places
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.price").value("Price must be in format: $10.00 or 10.00"));
+    }
+
+    // Test POST - Valid price with dollar sign
+    @Test
+    void test_createProduct_validPriceWithDollarSign_success() throws Exception {
+        Product validProduct = createProduct("P005", "Valid Product", "Valid description", "$99.99");
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.price").value("$99.99"));
+    }
+
+    // Test POST - Valid price without dollar sign
+    @Test
+    void test_createProduct_validPriceWithoutDollarSign_success() throws Exception {
+        Product validProduct = createProduct("P006", "Valid Product", "Valid description", "99.99");
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.price").value("99.99"));
+    }
+
+    // Test POST - Multiple validation errors at once
+    @Test
+    void test_createProduct_multipleValidationErrors_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId(""); // Empty ID
+        invalidProduct.setName("A"); // Too short
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("invalid"); // Invalid format
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.price").exists());
+    }
+
+    // Test POST - Valid product with null description (optional field)
+    @Test
+    void test_createProduct_nullDescription_success() throws Exception {
+        Product validProduct = new Product();
+        validProduct.setId("P007");
+        validProduct.setName("Valid Name");
+        validProduct.setDescription(null); // Description is optional
+        validProduct.setPrice("$10.00");
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    // Test POST - Valid product with null price (optional field)
+    @Test
+    void test_createProduct_nullPrice_success() throws Exception {
+        Product validProduct = new Product();
+        validProduct.setId("P008");
+        validProduct.setName("Valid Name");
+        validProduct.setDescription("Valid description");
+        validProduct.setPrice(null); // Price is optional
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    // Test PUT - Invalid ID with special characters
+    @Test
+    void test_updateProduct_invalidIdWithSpecialCharacters_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001@#$");
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(put(BASE_URI + "/P001")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.id").value("Product ID can only contain alphanumeric characters, hyphens, and underscores"));
+    }
+
+    // Test PUT - Missing name
+    @Test
+    void test_updateProduct_missingName_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(put(BASE_URI + "/P001")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Product name is required"));
+    }
+
+    // Test PUT - Invalid price format
+    @Test
+    void test_updateProduct_invalidPriceFormat_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("Valid description");
+        invalidProduct.setPrice("abc");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(put(BASE_URI + "/P001")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.price").value("Price must be in format: $10.00 or 10.00"));
+    }
+
+    // Test PUT - Description too long
+    @Test
+    void test_updateProduct_descriptionTooLong_badRequest() throws Exception {
+        Product invalidProduct = new Product();
+        invalidProduct.setId("P001");
+        invalidProduct.setName("Valid Name");
+        invalidProduct.setDescription("A".repeat(501));
+        invalidProduct.setPrice("$10.00");
+
+        String productJson = objectMapper.writeValueAsString(invalidProduct);
+
+        mockMvc.perform(put(BASE_URI + "/P001")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.description").value("Description must not exceed 500 characters"));
+    }
+
+    // Test PUT - Valid update with all fields
+    @Test
+    void test_updateProduct_validAllFields_success() throws Exception {
+        Product validProduct = createProduct("P001", "Updated Product", "Updated description", "$199.99");
+        
+        when(productService.updateProduct(eq("P001"), any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(put(BASE_URI + "/P001")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("P001"))
+                .andExpect(jsonPath("$.name").value("Updated Product"))
+                .andExpect(jsonPath("$.description").value("Updated description"))
+                .andExpect(jsonPath("$.price").value("$199.99"));
+    }
+
+    // Test POST - Valid ID with hyphens and underscores
+    @Test
+    void test_createProduct_validIdWithHyphensAndUnderscores_success() throws Exception {
+        Product validProduct = createProduct("P-001_TEST", "Valid Product", "Valid description", "$10.00");
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value("P-001_TEST"));
+    }
+
+    // Test POST - Minimum valid name length (2 characters)
+    @Test
+    void test_createProduct_minimumNameLength_success() throws Exception {
+        Product validProduct = createProduct("P009", "AB", "Valid description", "$10.00");
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("AB"));
+    }
+
+    // Test POST - Maximum valid description length (500 characters)
+    @Test
+    void test_createProduct_maximumDescriptionLength_success() throws Exception {
+        Product validProduct = new Product();
+        validProduct.setId("P010");
+        validProduct.setName("Valid Name");
+        validProduct.setDescription("A".repeat(500)); // Exactly 500 chars
+        validProduct.setPrice("$10.00");
+        
+        when(productService.saveOne(any(Product.class))).thenReturn(validProduct);
+
+        String productJson = objectMapper.writeValueAsString(validProduct);
+
+        mockMvc.perform(post(BASE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
     /**
      * Helper method to create a Product instance
      */
