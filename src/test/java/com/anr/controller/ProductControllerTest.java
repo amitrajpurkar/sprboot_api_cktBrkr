@@ -307,12 +307,12 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.id").value("Product ID must be between 1 and 50 characters"));
     }
 
-    // Test POST - Missing name (blank)
+    // Test POST - Missing name (null)
     @Test
     void test_createProduct_missingName_badRequest() throws Exception {
         Product invalidProduct = new Product();
         invalidProduct.setId("P001");
-        invalidProduct.setName("");
+        invalidProduct.setName(null);  // Truly missing name
         invalidProduct.setDescription("Valid description");
         invalidProduct.setPrice("$10.00");
 
@@ -537,12 +537,12 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.id").value("Product ID can only contain alphanumeric characters, hyphens, and underscores"));
     }
 
-    // Test PUT - Missing name
+    // Test PUT - Missing name (null)
     @Test
     void test_updateProduct_missingName_badRequest() throws Exception {
         Product invalidProduct = new Product();
         invalidProduct.setId("P001");
-        invalidProduct.setName("");
+        invalidProduct.setName(null);  // Truly missing name
         invalidProduct.setDescription("Valid description");
         invalidProduct.setPrice("$10.00");
 
