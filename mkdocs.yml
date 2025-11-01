@@ -160,6 +160,7 @@ nav:
     - Frontend Tests: FRONTEND_TEST_SUMMARY.md
     - Product Controller Tests: PRODUCT_CONTROLLER_TESTS.md
     - Test Results Summary: TEST_RESULTS_SUMMARY.md
+    - Validation Tests: VALIDATION_TESTS_SUMMARY.md
   
   - Migration Status:
     - Migration Summary: MIGRATION_SUMMARY.md
@@ -169,6 +170,12 @@ nav:
     - Phase 3 Complete: PHASE3_COMPLETE.md
     - Upgrade Progress: UPGRADE_PROGRESS.md
     - Upgrade Status: UPGRADE_STATUS.md
+  
+  - Code Reviews & Fixes:
+    - Code Review Summary: CODE_REVIEW_SUMMARY.md
+    - Senior Architect Review: SENIOR_ARCHITECT_CODE_REVIEW.txt
+    - Critical Fix 002: CRITICAL-002-FIX-SUMMARY.md
+    - Critical Fix 003: CRITICAL-003-FIX-SUMMARY.md
   
   - Additional Documentation:
     - Documentation Index: INDEX.md
