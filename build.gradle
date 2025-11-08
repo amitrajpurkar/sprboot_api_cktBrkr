@@ -136,7 +136,7 @@ test {
 }
 
 jacocoTestReport {
-  group "Reporting"
+  group = "Reporting"
   reports {
     xml.required = true
     csv.required = true

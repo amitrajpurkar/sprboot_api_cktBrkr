@@ -13,7 +13,7 @@ This folder contains all project documentation related to the Spring Boot 3.x up
 ### 🔄 Resilience4j Migration (Circuit Breaker)
 
 - **[RESILIENCE4J_MIGRATION.md](RESILIENCE4J_MIGRATION.md)** - Comprehensive migration guide (400+ lines)
-- **[RESILIENCE4J_QUICK_START.md](RESILIENCE4J_QUICK_START.md)** - Developer quick reference
+- **[RESILIENCE4J_QUICK_START.md](./quick-start/RESILIENCE4J_QUICK_START.md)** - Developer quick reference
 - **[RESILIENCE4J_IMPLEMENTATION_SUMMARY.md](RESILIENCE4J_IMPLEMENTATION_SUMMARY.md)** - Implementation details
 - **[Upgrade_CircuitBreaker_Plan.md](Upgrade_CircuitBreaker_Plan.md)** - Original upgrade plan
 
@@ -48,7 +48,7 @@ This folder contains all project documentation related to the Spring Boot 3.x up
 
 ### For Developers
 
-1. **Start here:** [RESILIENCE4J_QUICK_START.md](RESILIENCE4J_QUICK_START.md)
+1. **Start here:** [RESILIENCE4J_QUICK_START.md](./quick-start/RESILIENCE4J_QUICK_START.md)
 2. **Full details:** [RESILIENCE4J_MIGRATION.md](RESILIENCE4J_MIGRATION.md)
 3. **Test results:** [FINAL_TEST_RESULTS.md](FINAL_TEST_RESULTS.md)
 
@@ -76,11 +76,6 @@ This folder contains all project documentation related to the Spring Boot 3.x up
 - **Java Version:** 21 (for tests), 25 (for compilation)
 - **Gradle Version:** 9.1.0
 
-## 🔗 Related Files
-
-- **Main README:** [../../../README.md](../../../README.md)
-- **Build Configuration:** [../../../build.gradle](../../../build.gradle)
-- **Application Properties:** [../resources/application.properties](../resources/application.properties)
 
 ---
 
