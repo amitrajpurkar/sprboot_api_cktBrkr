@@ -4,14 +4,14 @@
 
 A full-stack production-ready application featuring a Spring Boot REST API backend with React frontend, demonstrating enterprise-grade patterns including circuit breakers, aspect-oriented logging, comprehensive test coverage, and modern web development.
 
-📖 **[View Detailed Analysis](src/main/docs/First_Analysis.md)**  
-🏗️ **[Full Stack Architecture](src/main/docs/FULLSTACK_ARCHITECTURE.md)**
+📖 **[View Detailed Analysis](docs/First_Analysis.md)**  
+🏗️ **[Full Stack Architecture](docs/FULLSTACK_ARCHITECTURE.md)**
 
 ## 🔄 Migration to Latest Versions
 
 This application has been upgraded to Spring Boot 3.2.10, Gradle 9.1.0, and migrated from Hystrix to Resilience4j for circuit breaker implementation.
 
-📋 **[View Complete Upgrade Plan](src/main/docs/Upgrade_Plan.md)**
+📋 **[View Complete Upgrade Plan](docs/Upgrade_Plan.md)**
 
 ## ✅ Migration Progress
 
@@ -23,7 +23,7 @@ All migration phases have been successfully completed:
 - ✅ Resilience4j circuit breaker integration
 - ✅ All tests passing (100% pass rate)
 
-📊 **[View Final Test Results](src/main/docs/FINAL_TEST_RESULTS.md)**
+📊 **[View Final Test Results](docs/FINAL_TEST_RESULTS.md)**
 
 ---
 
@@ -67,19 +67,19 @@ See [MkDocs Setup Guide](MKDOCS_SETUP_COMPLETE.md) for details.
 
 ### Quick Start Guides
 - 🗄️ [H2 Database Quick Start](H2_QUICK_START.md)
-- 🔄 [Resilience4j Quick Start](src/main/docs/RESILIENCE4J_QUICK_START.md)
+- 🔄 [Resilience4j Quick Start](docs/RESILIENCE4J_QUICK_START.md)
 - 🎨 [Frontend Quick Start](FRONTEND_QUICKSTART.md)
 - 🐳 [Docker Quick Start](DOCKER_QUICK_START.md)
 - ⚡ [Gatling Performance Testing](GATLING_QUICK_REFERENCE.md)
 
 ### Detailed Documentation
-- 📖 [Documentation Index](src/main/docs/INDEX.md)
-- 🏗️ [Full Stack Architecture](src/main/docs/FULLSTACK_ARCHITECTURE.md) ⭐ NEW
-- 📋 [H2 Migration Guide](src/main/docs/H2_MIGRATION.md)
-- 🛒 [Product API Implementation](src/main/docs/PRODUCT_API_IMPLEMENTATION.md) ⭐ NEW
-- 🎨 [Frontend Implementation](src/main/docs/FRONTEND_IMPLEMENTATION.md) ⭐ NEW
-- ✅ [Backend Test Results](src/main/docs/FINAL_TEST_RESULTS.md)
-- ✅ [Frontend Test Results](src/main/docs/FRONTEND_TEST_SUMMARY.md) ⭐ NEW
+- 📖 [Documentation Index](docs/index.md)
+- 🏗️ [Full Stack Architecture](docs/FULLSTACK_ARCHITECTURE.md) ⭐ NEW
+- 📋 [H2 Migration Guide](docs/H2_MIGRATION.md)
+- 🛒 [Product API Implementation](docs/PRODUCT_API_IMPLEMENTATION.md) ⭐ NEW
+- 🎨 [Frontend Implementation](docs/FRONTEND_IMPLEMENTATION.md) ⭐ NEW
+- ✅ [Backend Test Results](docs/FINAL_TEST_RESULTS.md)
+- ✅ [Frontend Test Results](docs/FRONTEND_TEST_SUMMARY.md) ⭐ NEW
 
 ## 🎯 Key Features
 
