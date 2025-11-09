@@ -48,7 +48,35 @@ git remote add origin <your-repo-url>
 git push -u origin master
 ```
 
-### Step 6: Sign Up / Log In to Vercel
+### Step 5.1: login to vercel using vercel-cli
+
+```bash
+vercel login
+
+# this will ask for one-time device code to login
+https://vercel.com/oauth/device?user_code=PBVQ-CVDN
+
+# after logging in, you will get a token
+```
+
+### Step 5.2: deploy using vercel-cli
+
+```bash
+vercel deploy
+
+# or alternative
+vercel
+```
+
+this will ask for a project name and a git repository to deploy to
+
+### Step 5.3: deploy with prod flag
+
+```bash
+vercel deploy --prod
+```
+
+### Step 6: Sign Up / Log In to Vercel (website)
 
 Go to [Vercel.com](https://vercel.com) and sign up or log in.
 
