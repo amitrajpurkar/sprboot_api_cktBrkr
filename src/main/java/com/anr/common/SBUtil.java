@@ -3,7 +3,7 @@ package com.anr.common;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,13 @@ import com.anr.exception.SBNestedException;
 import com.anr.logging.LogForwarder;
 import com.anr.logging.model.SplunkEvent;
 import com.google.gson.Gson;
-import com.mongodb.MongoException;
-import com.mongodb.MongoSecurityException;
-import com.mongodb.MongoSocketReadTimeoutException;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
-import com.netflix.hystrix.exception.HystrixTimeoutException;
+// MongoDB exceptions removed - migrated to H2 database
+// import com.mongodb.MongoException;
+// import com.mongodb.MongoSecurityException;
+// import com.mongodb.MongoSocketReadTimeoutException;
+// Removed: Hystrix not compatible with Spring Boot 3.x
+// import com.netflix.hystrix.exception.HystrixRuntimeException;
+// import com.netflix.hystrix.exception.HystrixTimeoutException;
 
 @Component
 public class SBUtil {
@@ -97,46 +99,24 @@ public class SBUtil {
         return rootCauseMsg;
     }
 
-    public ErrorRootElement parseHystrixException(String transactionID, Throwable e, String callingMethodName) {
+    /**
+     * Parse exception - Generic exception handling
+     * MongoDB-specific handling removed (migrated to H2)
+     */
+    public ErrorRootElement parseException(String transactionID, Throwable e, String callingMethodName) {
         String errMsgString = null;
         ErrorRootElement err = new ErrorRootElement("ERR-000",
                 getRootCauseMessage(e) + String.format(ERR_MSG_SUFFIX, callingMethodName));
-        SBNestedException ne = new SBNestedException("caught in hystrix fallback", e);
-        if (ne.contains(MongoException.class) || ne.contains(MongoSecurityException.class)
-                || ne.contains(MongoSocketReadTimeoutException.class)) {
-            err.setErrorCode("ERR-MONGO");
-        } else if (ne.contains(RestClientException.class)) {
+        SBNestedException ne = new SBNestedException("caught in fallback", e);
+        
+        // MongoDB exception handling removed - now using H2 database
+        if (ne.contains(RestClientException.class)) {
             err.setErrorCode("ERR-RESTBACKEND");
         }
 
-        if (e instanceof HystrixRuntimeException) {
-            switch (((HystrixRuntimeException) e).getFailureType()) {
-            case SHORTCIRCUIT:
-            case COMMAND_EXCEPTION:
-            case BAD_REQUEST_EXCEPTION:
-                errMsgString = "Hystrix runtime failure " + String.format(ERR_MSG_SUFFIX, callingMethodName);
-                logStackTrace(transactionID, errMsgString, e);
-                break;
-            case TIMEOUT:
-                errMsgString = "Hystrix timeout " + String.format(ERR_MSG_SUFFIX, callingMethodName);
-                logStackTrace(transactionID, errMsgString, e);
-                break;
-            case REJECTED_THREAD_EXECUTION:
-                errMsgString = "Hystrix rejects " + String.format(ERR_MSG_SUFFIX, callingMethodName);
-                logStackTrace(transactionID, errMsgString, e);
-                break;
-            default:
-                errMsgString = "Hystrix something else " + String.format(ERR_MSG_SUFFIX, callingMethodName);
-                logStackTrace(transactionID, errMsgString, e);
-                break;
-            }
-        } else if (e instanceof HystrixTimeoutException) {
-            errMsgString = "Hystrix timeout " + String.format(ERR_MSG_SUFFIX, callingMethodName);
-            logStackTrace(transactionID, errMsgString, e);
-        } else {
-            errMsgString = "Not a hystrix failure " + String.format(ERR_MSG_SUFFIX, callingMethodName);
-            logStackTrace(transactionID, errMsgString, e);
-        }
+        // Generic exception handling
+        errMsgString = "Exception occurred " + String.format(ERR_MSG_SUFFIX, callingMethodName);
+        logStackTrace(transactionID, errMsgString, e);
 
         return err;
     }

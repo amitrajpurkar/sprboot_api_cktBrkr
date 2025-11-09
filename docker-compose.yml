@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Spring Boot Application with H2 Database
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sprboot-api-cktbrkr
+    ports:
+      - "8080:8080"
+    environment:
+      # Spring profiles
+      - SPRING_PROFILES_ACTIVE=docker
+      # H2 Database (in-memory - no external database needed)
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:sampledb
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      # Application settings
+      - SPRING_APPLICATION_NAME=samplebackendsvc
+      # Security (change in production)
+      - SPRING_SECURITY_USER_NAME=user
+      - SPRING_SECURITY_USER_PASSWORD=password
+      # Logging
+      - LOGGING_LEVEL_COM_ANR=INFO
+      # JVM settings
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  app-network:
+    driver: bridge

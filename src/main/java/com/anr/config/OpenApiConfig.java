@@ -1,6 +1,6 @@
 package com.anr.config;
 
-import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -14,7 +14,7 @@ import io.swagger.v3.oas.models.info.License;
 public class OpenApiConfig {
     @Bean
     public GroupedOpenApi publicApi() {
-        return GroupedOpenApi.builder().setGroup("sb-svc-public").pathsToMatch("/api/v1/**").build();
+        return GroupedOpenApi.builder().group("sb-svc-public").pathsToMatch("/api/v1/**").build();
     }
 
     @Bean

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/**/probe")
+@RequestMapping("/probe")
 public class ProbeController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/readiness")

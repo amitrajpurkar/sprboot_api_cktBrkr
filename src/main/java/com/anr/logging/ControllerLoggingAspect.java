@@ -5,7 +5,6 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.anr.common.SBUtil;
@@ -15,7 +14,8 @@ import com.anr.controller.ControllerFailureResponses;
 import com.anr.logging.model.SplunkEvent.SplunkEventBuilder;
 import com.anr.model.SBResponseModel;
 import com.google.gson.Gson;
-import com.netflix.hystrix.HystrixCommand;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 
 @Aspect
 @Component
@@ -33,8 +33,7 @@ public class ControllerLoggingAspect {
     private ControllerFailureResponses failures;
 
     @Autowired
-    @Qualifier("CmdConfigDefService")
-    private HystrixCommand.Setter cmdConfigDefaultSvc;
+    private CircuitBreaker defaultApiCircuitBreaker;
 
     private static final String SPACE = " ";
 
@@ -48,33 +47,31 @@ public class ControllerLoggingAspect {
         bldr.transactionType(TransactionType.Request);
         sbutil.logInfo(transactionID, "start time:" + startTime);
 
-        HystrixCommand<SBResponseModel> command = new HystrixCommand<SBResponseModel>(cmdConfigDefaultSvc) {
-            @Override
-            protected SBResponseModel run() throws Exception {
+        // Execute with Resilience4j circuit breaker protection
+        SBResponseModel response;
+        try {
+            response = defaultApiCircuitBreaker.executeSupplier(() -> {
                 try {
                     return (SBResponseModel) jointpoint.proceed();
-                } catch (Exception e) {
-                    throw e;
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
+                } catch (Throwable t) {
+                    // Convert checked exception to unchecked for circuit breaker
+                    throw new RuntimeException("Controller execution failed", t);
                 }
-            }
+            });
+        } catch (Exception e) {
+            // Fallback logic (circuit breaker fallback or execution failure)
+            Signature signature = jointpoint.getSignature();
+            String methodName = signature.getName();
+            
+            // Unwrap the original exception if it was wrapped
+            Throwable originalException = e.getCause() != null ? e.getCause() : e;
+            
+            sbutil.logError(transactionID, String.format("Circuit breaker fallback: (method: %s) %s", 
+                    methodName, sbutil.getRootCauseMessage(originalException)));
+            sbutil.logStackTrace(transactionID, methodName, originalException);
 
-            @Override
-            protected SBResponseModel getFallback() {
-                Throwable t = getExecutionException();
-
-                Signature signature = jointpoint.getSignature();
-                String methodName = signature.getName();
-                String transactionID = (String) jointpoint.getArgs()[0];
-                sbutil.logError(transactionID, String.format("Execution exception: (method: %s) %s", methodName,
-                        sbutil.getRootCauseMessage(t)));
-                sbutil.logStackTrace(transactionID, methodName, t);
-
-                return failures.getSampleFailureResponse(transactionID, sourceChannel, locale, field1, field2, t);
-            }
-        };
-        SBResponseModel response = command.execute();
+            response = failures.getSampleFailureResponse(transactionID, sourceChannel, locale, field1, field2, originalException);
+        }
 
         String messageString = null;
         if (response == null) {

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import com.google.common.base.Stopwatch;
@@ -21,7 +21,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertManyResult;
 
-@Component
+@Service
 public class CollectionUpload {
 
     @Autowired

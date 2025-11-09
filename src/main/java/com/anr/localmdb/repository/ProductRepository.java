@@ -2,19 +2,20 @@ package com.anr.localmdb.repository;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.anr.localmdb.model.Product;
 
-@Component
-public interface ProductRepository extends MongoRepository<Product, String> {
+@Repository
+public interface ProductRepository extends JpaRepository<Product, String> {
 
-    @Query("{'name': ?0 }")
+    // JPA method name query - finds products by exact name match
     List<Product> findProductsByName(String name);
 
-    @Query("{'description': {$in: [ /?0/i ]} }")
-    List<Product> findProductsWithDescriptionContaining(String name);
+    // JPQL query - finds products with description containing the text (case-insensitive)
+    @Query("SELECT p FROM Product p WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :text, '%'))")
+    List<Product> findProductsWithDescriptionContaining(String text);
 
 }

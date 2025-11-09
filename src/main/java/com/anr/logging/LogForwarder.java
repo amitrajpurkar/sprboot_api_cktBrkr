@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.anr.common.SBUtil;
 import com.anr.config.ConfigProperties;
 import com.anr.logging.model.SplunkEvent;
 import com.anr.logging.model.SplunkLogRecord;
@@ -27,8 +26,10 @@ public class LogForwarder {
 
     @Autowired
     private SplunkLogRecord logRecord;
-    @Autowired
-    private SBUtil sbutil;
+
+    // circular dependencies are not allowed
+    //@Autowired
+    //private SBUtil sbutil;
     @Autowired
     private ConfigProperties appProps;
     @Autowired
